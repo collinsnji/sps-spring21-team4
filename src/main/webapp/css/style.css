@@ -1,6 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap');
 
+:root {
+  --arrow-y-position: 0px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
   background-color: #faf5e3;
   box-sizing: content-box;
@@ -14,6 +24,32 @@ body {
   font-family: 'freight-big-pro';
   font-size: 5rem;
   font-style: italic;
+  margin-top: 0.25em;
+}
+
+.btn {
+  background: #f3eacd;
+  border: 0.05rem solid #e4c899;
+  border-radius: 0.1rem;
+  color: #313131;
+}
+
+.btn.btn-primary {
+  background: #e4c899;
+  border-color: #c7b15f;
+  color: #313131;
+}
+
+.btn.btn-primary:hover {
+  background: #8e5922;
+  border-color: #9e703f;
+  color: #fff;
+}
+
+.btn:hover {
+  background: #faf5e3;
+  border-color: #a67b4d;
+  text-decoration: none;
 }
 
 .btn.btn-link {
@@ -29,31 +65,70 @@ body {
 }
 
 .annotated {
-  background-color: pink;
+  background: #e4c899;
+  padding: 2px 0;
 }
 
 .annotation-textarea {
-  height: 150px;
-  width: 400px;
+  background-color: #faf5e3;
+  height: 150px !important;
+  width: 100%;
 }
 
 .hidden {
   display: none;
 }
 
-.annotation-content,
-.poem-content {
-  grid-template-columns: repeat(2, 1fr);
+.annotations-content,
+.add-annotation {
+  border-left: 4px solid #e4c899;
+  height: 70%;
+  padding: 1rem;
   position: relative;
-  width: 50%;
+}
+
+.add-annotation::before,
+.annotations-content::before {
+  border-bottom: 15px solid transparent;
+  border-right: 20px solid #e4c899;
+  border-top: 15px solid transparent;
+  content: '';
+  height: 0;
+  left: -20px;
+  position: absolute;
+  top: var(--arrow-y-position);
+  transition: all 0.2s;
+  width: 0;
+}
+
+.form-buttons-container {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0.5rem 0;
+}
+
+.discard-button {
+  margin-right: 1rem;
+}
+
+.close-section {
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .poem-line {
+  display: table-row;
   line-height: 1.8;
   margin: 0;
+  padding: 0px 4px;
 }
 
 .poem-title {
+  align-items: baseline;
+  cursor: pointer;
+  display: inline;
+  flex-direction: row;
   font-family: 'freight-big-pro';
   font-size: 3.75rem;
   text-decoration: none;
@@ -66,13 +141,28 @@ body {
   text-decoration: none;
 }
 
+.text-metadata {
+  color: #8e5821;
+}
+
 .main-content {
   align-items: center;
-  background-color: #faf5e3;
+  background-color: #f3eacd;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  padding: 1.5rem 3rem;
   width: 100%;
+}
+
+.main-content-poem-view {
+  align-items: center;
+  display: grid;
+  grid-column-gap: 3rem;
+  grid-template-columns: 1fr 1fr;
+  margin: auto;
+  margin-bottom: 1rem;
+  width: 75%;
 }
 
 .navbar {
@@ -84,4 +174,5 @@ body {
   flex: none;
   font-family: 'PT Sans';
   justify-content: center !important;
+  position: relative;
 }

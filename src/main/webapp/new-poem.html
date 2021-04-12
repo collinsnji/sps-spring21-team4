@@ -8,6 +8,7 @@
     <title>Upload New Poem</title>
     <link rel="stylesheet" href="https://use.typekit.net/rtr2vsr.css">
     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -38,7 +39,10 @@
                 <label class="form-label" for="source">Source</label>
                 <input class="form-input" name="source" type="text" placeholder="Original Source of poem"
                     required="true" />
-                <button class="btn btn-primary" id="submit-btn" type"submit">Submit</button>
+                <div class="form-buttons-container">
+                    <input type="reset" class="btn discard-button" id="annotation-discard-btn" value="Discard" />
+                    <button class="btn btn-primary" id="submit-btn" type"submit">Submit</button>
+                </div>
             </form>
         </div>
     </div>
