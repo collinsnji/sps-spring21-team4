@@ -1,18 +1,15 @@
 import { PoemUtils } from './PoemUtils.js';
-/**
- * Gets a poem and its annotations
- */
+
 class PoemData {
   constructor() {
-    this.poemId = null;
     this.poemData = null;
-    this.annotationData = null;
+    this.poemId = null;
+    this.lineIds = null;
+    this.poemContainer = document.querySelector('.poem-content');
+    this.annotationContentContainer = document.querySelector('.annotations-content');
+    this.addAnnotationContainer = document.querySelector('.add-annotation');
   }
 
-  /**
-   * Get the poem data
-   * @returns Poem data as a JSON object
-   */
   async getPoemData() {
     try {
       const response = await fetch(`/poem?id=${this.poemId}`);
@@ -25,105 +22,109 @@ class PoemData {
   }
 
   /**
-   * Get all the poem annotations
-   * @returns Annotation data as a JSON object
-   */
-  async getPoemAnnotations() {
-    try {
-      const response = await fetch(`/annotations?poemId=${this.poemId}`);
-      const annotationsDataJson = await response.json();
-      this.annotationData = annotationsDataJson;
-      return annotationsDataJson;
-    } catch (err) {
-      throw new Error(err);
-    }
-  }
-
-  /**
-   * Add annotations to a line
-   * @param {object} line - A poem line
-   */
-  addLineAnnotation(line, lineElement) {
-    lineElement.classList.add('annotated');
-    lineElement.addEventListener('click', () => {
-      let addAnnotationForm = document.querySelector('.add-annotation');
-      let annotationsContent =
-        document.querySelector('.annotations-content');
-      let lineAnnotations = this.annotationData.filter(annotation => annotation.lineId == line.lineId);
-      let allAnnotationsForLine = [];
-      lineAnnotations.forEach(annotation => {
-        allAnnotationsForLine.push(annotation.annotationText);
-      });
-      // Unhide the annotations content container while hiding the new
-      // annotations form
-      addAnnotationForm.classList.add('hidden');
-      annotationsContent.classList.remove('hidden');
-      annotationsContent.innerHTML = allAnnotationsForLine.join('\n').replace(/\n/g, '<br>');
-    });
-  }
-
-  /**
-   * Reveal the new annotation form
-   * @param {object} line - A poem line
-   */
-  showAnnotationForm(line) {
-    let addAnnotationForm = document.querySelector('.add-annotation');
-    let annotationsContent = document.querySelector('.annotations-content');
-    // show the annotations form while hiding the annotations content
-    // container
-    addAnnotationForm.classList.remove('hidden');
-    annotationsContent.classList.add('hidden');
-    Object.assign(addAnnotationForm, {
-      'data-lineid': line.lineId,
-      'data-poemid': this.poemData.id
-    });
-  }
-
-  /**
-   * Add the poem data to the page
+   * Append the poem information to the page
    */
   addPoemToPage() {
-    // Get the poem content container
-    let poemContent = document.querySelector('.poem-content');
-    poemContent.setAttribute('data-poemid', this.poemData.id);
-
-    // Add the poem title and poet name to the page
+    // Set the poem id
+    this.poemContainer.setAttribute('data-poemid', this.poemData.id);
+    // Add poem title
     let poemTitle = PoemUtils.createElement('h3', this.poemData.poemTitle, { class: 'poem-title' });
     let poetName = PoemUtils.createElement(
       'p', `by ${this.poemData.poetName}`,
       { class: 'my-3 poet-name text-small text-bold text-uppercase' });
 
-    poemContent.appendChild(poemTitle);
-    poemContent.appendChild(poetName);
+    let poemLines = this.constructPoemLines();
+    let poemMetadata = this.constructPoemMetadata();
+    this.poemContainer.appendChild(poemTitle);
+    this.poemContainer.appendChild(poetName);
+    this.poemContainer.appendChild(poemLines);
+    this.poemContainer.appendChild(poemMetadata);
+  }
 
-    // Add poem lines and attach a click event listener to the lines
+  /**
+   * Construct the poem lines
+   * @returns {HTMLElement} - An html element with all the poem lines
+   */
+  constructPoemLines() {
+    const poemLinesContainer = PoemUtils.createElement('div', null, null);
     const poemLines = JSON.parse(this.poemData.poemLines);
-    const allLineIds = this.annotationData.map(annotation => parseInt(annotation.lineId));
     for (let line of poemLines) {
+      let lineClass = window.lineIds.includes(line.lineId) ? 'poem-line annotated' : 'poem-line';
       let lineElement = PoemUtils.createElement('p', line.lineText, {
-        class: 'poem-line',
+        class: lineClass,
         'data-lineid': line.lineId
       });
-      // If the line has an annotation, show the annotation once the line is
-      // clicked
-      if (allLineIds.includes(line.lineId)) {
-        this.addLineAnnotation(line, lineElement);
-      }
-      // Otherwise, show the "add annotation" section
-      else {
-        lineElement.addEventListener('click', () => { this.showAnnotationForm(line) });
-      }
-      poemContent.appendChild(lineElement);
+      lineElement.addEventListener('click', () => { this.handleLineClick(line.lineId, lineElement) });
+      poemLinesContainer.appendChild(lineElement);
     }
-    // Poem source and date added
+    return poemLinesContainer;
+  }
+
+  /**
+   * Construct the poem metadata
+   * @returns {HTMLElement} - An html element with the poem metadata
+   */
+  constructPoemMetadata() {
     let poemSource = PoemUtils.createElement(
       'div', `Source: ${this.poemData.source}`,
-      { class: 'text-small text-italic text-gray mt-2' });
+      { class: 'text-small text-italic text-metadata mt-2' });
     let poemDateAdded = PoemUtils.createElement(
       'span', `Added on ${new Date(this.poemData.dateAdded).toDateString()}`,
-      { class: 'text-small text-italic text-gray' });
-    poemContent.appendChild(poemSource);
-    poemContent.appendChild(poemDateAdded);
+      { class: 'text-small text-italic text-metadata' });
+    let metadataContainer = PoemUtils.createElement('div', null, null);
+    metadataContainer.appendChild(poemSource);
+    metadataContainer.appendChild(poemDateAdded);
+    return metadataContainer;
+  }
+
+  /**
+   * Handle the click event listener on the poem lines
+   * @param {number} lineId - The poem line ID
+   * @param {HTMLElement} lineElement - The html element for the poem line
+   */
+  handleLineClick(lineId, lineElement) {
+    if (window.lineIds.includes(lineId)) {
+      this.showAnnotation(lineId, lineElement);
+    } else {
+      this.showAnnotationForm(lineId, lineElement);
+    }
+  }
+
+  /**
+   * Show the annotations attached to a line
+   * @param {number} lineId - The poem line ID
+   * @param {HTMLElement} lineElementTarget - The html element for the poem line
+   */
+  showAnnotation(lineId, lineElementTarget) {
+    let annotationsContentText = document.querySelector('.annotations-content-text');
+    let lineAnnotations = window.annotationData.filter(annotation => annotation.lineId == lineId);
+    let allAnnotationsForLine = [];
+    lineAnnotations.forEach(annotation => {
+      allAnnotationsForLine.push(annotation.annotationText);
+    });
+    // Unhide the annotations content container while hiding the new
+    // annotations form
+    this.addAnnotationContainer.classList.add('hidden');
+    this.annotationContentContainer.classList.remove('hidden');
+    annotationsContentText.innerHTML = allAnnotationsForLine.join('\n').replace(/\n/g, '<br>');
+
+    // Update arrow position
+    PoemUtils.updateArrowPosition(lineElementTarget, this.annotationContentContainer);
+  }
+
+  /**
+   * Show the add annotation form
+   * @param {number} lineId - The poem line ID
+   * @param {HTMLElement} lineElementTarget - The html element for the poem line
+   */
+  showAnnotationForm(lineId, lineElementTarget) {
+    this.addAnnotationContainer.classList.remove('hidden');
+    this.annotationContentContainer.classList.add('hidden');
+    this.addAnnotationContainer.dataset.lineid = lineId;
+    this.addAnnotationContainer.dataset.poemid = this.poemData.id;
+
+    // Update arrow position
+    PoemUtils.updateArrowPosition(lineElementTarget, this.addAnnotationContainer);
   }
 
   async init() {
@@ -131,12 +132,13 @@ class PoemData {
     this.poemId = params.get('id');
     if (this.poemId) {
       await this.getPoemData();
-      await this.getPoemAnnotations();
+      await PoemUtils.getPoemAnnotations(this.poemId);
       this.addPoemToPage();
+      PoemUtils.closeSectionHandler();
     }
   }
 }
-// Initialize on page load
+
 document.addEventListener('DOMContentLoaded', () => {
   new PoemData().init();
-});
+})

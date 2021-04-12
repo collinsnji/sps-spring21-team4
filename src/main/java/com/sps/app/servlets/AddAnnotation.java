@@ -36,6 +36,7 @@ public class AddAnnotation extends HttpServlet {
     datastore.put(annotationEntity);
     final Gson gson = new Gson();
     response.setContentType("application/json;");
-    response.getWriter().println(gson.toJson("{status: \"ok\", code: 200}"));
+    response.setStatus(200);
+    response.getWriter().println(gson.toJson("{\"status\": \"ok\", \"code\": 200}"));
   }
 }
