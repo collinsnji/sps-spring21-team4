@@ -65,6 +65,24 @@
       <artifactId>jsoup</artifactId>
       <version>1.8.3</version>
     </dependency>
+    <!-- Google Text to Speech -->
+    <dependency>
+      <groupId>com.google.cloud</groupId>
+      <artifactId>google-cloud-texttospeech</artifactId>
+      <version>1.2.1</version>
+    </dependency>
+    <!-- Google OAuth 2.0 -->
+    <dependency>
+      <groupId>com.google.apis</groupId>
+      <artifactId>google-api-services-oauth2</artifactId>
+      <version>v2-rev157-1.25.0</version>
+    </dependency>
+    <!-- Google OAuth 2.0 servlets -->
+    <dependency>
+      <groupId>com.google.oauth-client</groupId>
+      <artifactId>google-oauth-client-servlet</artifactId>
+      <version>1.31.0</version>
+    </dependency>
   </dependencies>
 
   <build>

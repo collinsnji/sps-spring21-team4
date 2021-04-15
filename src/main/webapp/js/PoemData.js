@@ -1,4 +1,5 @@
 import { PoemUtils } from './PoemUtils.js';
+import { PoemSpeechSynthesis } from './PoemSpeechSynthesis.js'
 
 class PoemData {
   constructor() {
@@ -24,21 +25,41 @@ class PoemData {
   /**
    * Append the poem information to the page
    */
-  addPoemToPage() {
+  async addPoemToPage() {
     // Set the poem id
     this.poemContainer.setAttribute('data-poemid', this.poemData.id);
     // Add poem title
-    let poemTitle = PoemUtils.createElement('h3', this.poemData.poemTitle, { class: 'poem-title' });
+    let poemTitle = PoemUtils.createElement(
+      'h3', this.poemData.poemTitle,
+      { class: 'poem-title' });
     let poetName = PoemUtils.createElement(
       'p', `by ${this.poemData.poetName}`,
       { class: 'my-3 poet-name text-small text-bold text-uppercase' });
-
+    let playIcon = PoemUtils.createElement('span', 'play_circle', { class: 'material-icons tooltip', id: 'read-poem', 'data-tooltip': 'Read Poem' });
     let poemLines = this.constructPoemLines();
     let poemMetadata = this.constructPoemMetadata();
+    poemTitle.appendChild(playIcon);
     this.poemContainer.appendChild(poemTitle);
     this.poemContainer.appendChild(poetName);
     this.poemContainer.appendChild(poemLines);
     this.poemContainer.appendChild(poemMetadata);
+
+    // Read poem
+    let textToSpeech = `${this.poemData.poemTitle}. by ${this.poemData.poetName}. ${this.poemData.fullText}`;
+    await new PoemSpeechSynthesis().init(textToSpeech);
+    let poemAudio = document.getElementById("poem-synthesis");
+    poemAudio.addEventListener('ended', () => { playIcon.innerHTML = 'play_circle' });
+    playIcon.addEventListener('click', () => {
+      if (poemAudio.paused || poemAudio.ended) {
+        playIcon.innerHTML = 'pause_circle';
+        poemAudio.play();
+      }
+      else {
+        playIcon.innerHTML = 'play_circle';
+        poemAudio.pause();
+      }
+
+    });
   }
 
   /**
@@ -97,15 +118,26 @@ class PoemData {
    */
   showAnnotation(lineId, lineElementTarget) {
     let annotationsContentText = document.querySelector('.annotations-content-text');
-    let lineAnnotations = window.annotationData.filter(annotation => annotation.lineId == lineId);
+    let annotatorNameContainer = document.querySelector('.annotator-name');
+    let lineAnnotations = window.annotationData
+      .filter(annotation => annotation.lineId == lineId)
+      .map((_annotation) => {
+        return {
+          annotationText: _annotation.annotationText,
+          annotator: _annotation.addedBy,
+          dateAdded: _annotation.dateAdded
+        }
+      });
     let allAnnotationsForLine = [];
     lineAnnotations.forEach(annotation => {
       allAnnotationsForLine.push(annotation.annotationText);
     });
+
     // Unhide the annotations content container while hiding the new
     // annotations form
     this.addAnnotationContainer.classList.add('hidden');
     this.annotationContentContainer.classList.remove('hidden');
+    annotatorNameContainer.innerHTML = `Added by ${lineAnnotations[0].annotator} on ${new Date(lineAnnotations[0].dateAdded).toDateString()}`;
     annotationsContentText.innerHTML = allAnnotationsForLine.join('\n').replace(/\n/g, '<br>');
 
     // Update arrow position
@@ -133,7 +165,7 @@ class PoemData {
     if (this.poemId) {
       await this.getPoemData();
       await PoemUtils.getPoemAnnotations(this.poemId);
-      this.addPoemToPage();
+      await this.addPoemToPage();
       PoemUtils.closeSectionHandler();
     }
   }

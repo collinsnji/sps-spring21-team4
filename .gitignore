@@ -30,3 +30,6 @@ hs_err_pid*
 .vscode/
 .theia/
 target/
+
+src/main/appengine/env_vars.yaml
+src/main/appengine/spring21-sps-4-credentials.json
