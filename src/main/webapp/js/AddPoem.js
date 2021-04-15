@@ -22,13 +22,19 @@ class AddPoem {
         'method': 'POST',
         'headers': { 'Content-Type': 'application/json' },
         'body': JSON.stringify(data)
-      }).then(
-        response => {
-          /**
-           * @todo - Do something with this response code
-           * @todo Perhaps show a confirmation of successful addition
-           */
-          console.log(response.json())
+      })
+        .then(response => response.json())
+        .then(response => {
+          response = JSON.parse(response);
+          if (response.code == 200) {
+            // @todo - Ideally, on success, the page should load the new poem page
+            alert("Added successfully");
+            window.location.href = "/";
+          }
+          else {
+            alert("Something went wrong");
+            window.location.href = "/";
+          }
         })
     } catch (err) {
       throw new Error(err);
@@ -51,5 +57,5 @@ class AddPoem {
 }
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
-  new AddPoem().Init();
+  new AddPoem().init();
 });

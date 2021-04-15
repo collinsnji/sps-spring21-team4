@@ -33,12 +33,13 @@ class AddAnnotation {
       document.querySelector(`[data-lineid='${lineId}']`).classList.add('annotated');
       document.querySelector('.add-annotation').classList.add('hidden');
     }
+    else {
+      window.location.href = window.location.origin + '/login';
+    }
   }
 
   init() {
     let submitAnnotationButton = document.querySelector('#annotation-submit-btn');
-    let discardAnnotationButton = document.querySelector('#annotation-discard-btn');
-    console.log(submitAnnotationButton, discardAnnotationButton)
     submitAnnotationButton.addEventListener('click', (e) => {
       e.preventDefault();
       let dataset = document.querySelector('.add-annotation').dataset;
