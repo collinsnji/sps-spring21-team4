@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Poetry Critic" />
+    <link rel="stylesheet" href="https://use.typekit.net/rtr2vsr.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Poetry Critic | About</title>
+</head>
+
+<body>
+    <header class="navbar">
+        <section class="navbar-section">
+            <a href="/" class="btn btn-link">Home</a>
+            <a href="/recent.html" class="btn btn-link">Recent Poems</a>
+        </section>
+        <section class="navbar-center">
+            <h1 class="logo">Poetry Critic</h1>
+        </section>
+        <section class="navbar-section">
+            <a href="/new-poem.html" class="btn btn-link">New Poem</a>
+            <a href="/about.html" class="btn btn-link">About This Project</a>
+        </section>
+    </header>
+    <div class="main-content">
+        <section class="about-content">
+            <div class="about-section-content">
+                <h2 class="about-section-title">Motivation & Inspiration</h2>
+                <div class="about-section-text">
+                    <p class="section-text">
+                        <a href="/">Poetry Critic</a> is a project aimed at deciphering poetry from a community
+                        perspective. For the longest time, Poetry has been considered a genre of literature reserved for
+                        the elite. But as one of my favourite poets puts it,
+                    <blockquote>Poetry is not a luxury. &mdash; <a href="https://en.wikipedia.org/wiki/Audre_Lorde"
+                            target="_blank">Audre Lorde</a></blockquote>
+                    Poetry is a sub genre of English Literature that is very fascinating, and often very confusing
+                    for students and even professional writers educators. Because poetry often follow various strict
+                    writing rules that limits the length of poems, understanding the poet's intent and true
+                    meaning behind the poem can be a hassle. Current tools and websites available today (LitCharts,
+                    Sparknotes et. al) are great resources to get a brief overview of any text. But what these tools
+                    don't offer is a <em>community focused</em> approach to learning poetry, and that is where Poetry
+                    Critic fills in the gap. <em>Poetry Critic allows anyone to annotate lines of a poem adding
+                        knowledge to a line that may be otherwise complex to analyze</em>
+                    </p>
+                </div>
+                <h2 class="about-section-title">Implementation &amp; Usage</h2>
+                <div class="about-section-text">
+                    <p class="section-text">
+                        Poetry Critic use Google Datastore for storing poem data as well as the annotations. To add an
+                        annotation, simply click on a line. An annotation text area will open up where you can add an
+                        annotation. You must be logged in to add an annotation. The log in process uses Google OAuth2.0,
+                        and the implementation for this project is heavily based on <a
+                            href="https://happycoding.io/tutorials/google-cloud/oauth-2" target="_blank">Kevin Workman's
+                            tutorial on Google OAuth.</a>
+                        Lastly, this project uses Google Text to Speech API for the text to speech engine responsible
+                        for reading the poems out loud.
+                    </p>
+                </div>
+                <h2 class="about-section-title">Challenges and Wins</h2>
+                <div class="about-section-text">
+                    <p class="section-text">
+                        My biggest challenge in this whole process was getting up to speed with Datastore. Datastore
+                        offers a great API. However, the documentation is very lacking in very specific areas,
+                        especially for new beginners or someone looking for a very quick implementation. It took me a
+                        while to understand how to navigate the various endpoints and APIs, but when I finally did, it
+                        was smooth sailing from there on out. Another challenge I ran into was CORS error when
+                        redirecting in the authentication step. I resolved this issue by letting JS handle the redirect.
+                        This is certainly not the most efficient way of resolving the issue, but for the time being, it
+                        was the best solution I could think of. But will all these challenges, there were big wins that
+                        came out of the project. First, I worked on the project alone due to some technical difficulties
+                        with my team, but I was still able to finish the project as envisioned. Second, through this
+                        process, I learned how to use CSS grids as well as typography for styling. Finally, just
+                        completing the project itself was a huge win for me, and one that I am truly proud of.
+                    </p>
+                </div>
+                <h2 class="about-section-title">Future Improvements</h2>
+                <div class="about-section-text">
+                    <p class="section-text">
+                        While I got most of the initial ground work done, there is still significant room for
+                        improvements in the project.
+                    <ul>
+                        <li>- The authentication doesn't quite works as intended</li>
+                        <li>- The UX could use some major improvements</li>
+                        <li>- An upvote/downvote system on the annotations will be nice</li>
+                        <li>- Adding the ability to add comments on the poems or annotations will also be nice</li>
+                        <li>etc, etc</li>
+                    </ul>
+                    </p>
+                </div>
+                <h2 class="about-section-title">About the Developer</h2>
+                <div class="about-section-text">
+                    <p class="section-text">
+                        Hello there! My name is Collins Nji (aka Collin) and I built The Poetry Critic. I'm a rising
+                        junior at Mount St. Mary's University in Northern Maryland. I'm currently pursuing my undergrad
+                        with a major in Computer Science, and a double minor in Data Science and English Language. I am
+                        very passionate about literature and language, which was a motivational factor behind Poetry
+                        Critic. This spring semester, I enrolled in three English Language courses (it's a bad idea
+                        don't try it), and I had to read a lot of different text, including lots of poems. I am terrible
+                        at interpreting poems, and often have no clue what the poet is saying. I created the Poetry
+                        Critic is because I understand the frustration one can have when they have no clue what a poet
+                        is talking about in a poem. Hopefully through our shared love for literature and shared
+                        frustration of poetry, the Poetry Critic can offer a way to alleviate this frustration.
+                        <br><br>
+                        Connect with me:<br>
+                        LinkedIn: <a href="https://linkedin.com/in/collingrimm">linkedin.com/in/collingrimm</a><br>
+                        GitHub: <a href="https://github.com/collinsnji">github.com/collinsnji</a><br>
+                        Resume: <a href="https://cdn.collingrimm.com/collins-nji-resume.pdf">collins-nji-resume.pdf</a><br>
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script type="module" src="js/ListPoems.js"></script>
+</body>
+
+</html>
