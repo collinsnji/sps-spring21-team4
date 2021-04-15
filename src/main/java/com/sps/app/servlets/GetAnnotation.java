@@ -39,10 +39,11 @@ public class GetAnnotation extends HttpServlet {
       final long poemId = entity.getLong("poemId");
       final String lineId = entity.getString("lineId");
       final String annotationText = entity.getString("annotationText");
+      final String addedBy = entity.getString("addedBy");
       final long dateAdded = entity.getLong("dateAdded");
 
       final Annotation annotation =
-          new Annotation(poemId, annotationId, lineId, annotationText, dateAdded);
+          new Annotation(poemId, annotationId, lineId, annotationText, addedBy, dateAdded);
       annotations.add(annotation);
     }
 
